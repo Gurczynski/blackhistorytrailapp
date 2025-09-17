@@ -1,0 +1,134 @@
+{
+  "cityHighlights": [
+    {
+      "id": 1,
+      "title": "City Council Meeting Updates",
+      "description": "Latest decisions and upcoming agenda items from this week's council meeting including infrastructure improvements and budget discussions.",
+      "date": "2024-07-10",
+      "image": "https://images.pexels.com/photos/8112199/pexels-photo-8112199.jpeg",
+      "category": "government"
+    },
+    {
+      "id": 2,
+      "title": "Infrastructure Upgrades",
+      "description": "New water main improvements coming to downtown area with expected completion by fall 2024.",
+      "date": "2024-07-08",
+      "image": "https://images.pexels.com/photos/1105766/pexels-photo-1105766.jpeg",
+      "category": "infrastructure"
+    },
+    {
+      "id": 3,
+      "title": "Beach Renourishment Project",
+      "description": "Major sand replenishment project begins next month to protect our beautiful coastline.",
+      "date": "2024-07-05",
+      "image": "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
+      "category": "environment"
+    },
+    {
+      "id": 4,
+      "title": "New Public Art Installation",
+      "description": "Community artists unveil new mural celebrating Daytona Beach's racing heritage downtown.",
+      "date": "2024-07-03",
+      "image": "https://images.pexels.com/photos/1105766/pexels-photo-1105766.jpeg",
+      "category": "arts"
+    }
+  ],
+  "parks": [
+    {
+      "id": 1,
+      "name": "Riverfront Park",
+      "description": "Beautiful waterfront park with walking trails and scenic views",
+      "address": "105 E Orange Ave, Daytona Beach, FL",
+      "amenities": ["Walking Trails", "Playground", "Boat Ramp", "Picnic Areas"],
+      "images": [
+        "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
+        "https://images.pexels.com/photos/1105766/pexels-photo-1105766.jpeg"
+      ],
+      "coordinates": {
+        "latitude": 29.2108,
+        "longitude": -81.0228
+      },
+      "hours": "6:00 AM - 10:00 PM Daily"
+    },
+    {
+      "id": 2,
+      "name": "Daytona Beach Bandshell",
+      "description": "Historic outdoor amphitheater hosting concerts and events",
+      "address": "250 N Atlantic Ave, Daytona Beach, FL",
+      "amenities": ["Amphitheater", "Beach Access", "Parking", "Restrooms"],
+      "images": [
+        "https://images.pexels.com/photos/1105766/pexels-photo-1105766.jpeg"
+      ],
+      "coordinates": {
+        "latitude": 29.2311,
+        "longitude": -80.9756
+      },
+      "hours": "Varies by Event"
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "title": "Pay Utility Bill",
+      "description": "Access online portal for water bills, view payment history, and manage your account securely.",
+      "category": "residents",
+      "availability": "Available 24/7",
+      "icon": "credit-card",
+      "details": {
+        "overview": "Our online utility billing system allows residents to manage their water and sewer accounts conveniently.",
+        "howTo": [
+          "Visit the online portal",
+          "Enter your account number",
+          "Select payment method",
+          "Confirm payment details"
+        ],
+        "requirements": ["Account Number", "Email Address", "Payment Method"],
+        "fees": "No convenience fees for bank transfers",
+        "contact": "386-671-8000"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Garbage & Recycling",
+      "description": "Collection schedules, waste rates, and recycling guidelines for residents.",
+      "category": "residents",
+      "availability": "Weekly collection",
+      "icon": "recycle",
+      "details": {
+        "overview": "Comprehensive waste management services including garbage collection, recycling, and yard waste pickup.",
+        "schedule": {
+          "garbage": "Weekly on designated day",
+          "recycling": "Every other week",
+          "yardWaste": "Weekly during growing season"
+        },
+        "guidelines": [
+          "Place bins at curb by 6 AM",
+          "Remove bins within 24 hours",
+          "No hazardous materials",
+          "Bags must be sealed"
+        ],
+        "contact": "386-671-8080"
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "title": "Summer Music Festival",
+      "date": "2024-07-23",
+      "time": "7:00 PM - 11:00 PM",
+      "location": "Daytona Beach Bandshell",
+      "image": "https://images.pexels.com/photos/1105766/pexels-photo-1105766.jpeg",
+      "description": "Join us for an evening of live music featuring local and regional artists."
+    },
+    {
+      "id": 2,
+      "title": "Community Meeting",
+      "date": "2024-07-23",
+      "time": "6:00 PM - 8:00 PM",
+      "location": "City Hall",
+      "image": "https://images.pexels.com/photos/8112199/pexels-photo-8112199.jpeg",
+      "description": "Monthly community meeting to discuss local issues and upcoming projects."
+    }
+  ]
+}
