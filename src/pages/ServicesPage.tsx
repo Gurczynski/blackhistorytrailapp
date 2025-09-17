@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { 
   CreditCard, 
   FileText, 
@@ -6,33 +7,31 @@ import {
   Recycle,
   Clock
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import MobileHeader from "@/components/MobileHeader";
 import { Button } from "@/components/ui/button";
+import testData from "@/data/testData.json";
 
 const ServicesPage = () => {
+  const [activeTab, setActiveTab] = useState('all');
+  
+  const tabs = [
+    { id: 'all', label: 'All Services' },
+    { id: 'residents', label: 'Residents' },
+    { id: 'business', label: 'Business' },
+    { id: 'online', label: 'Online' }
+  ];
+
   const quickActions = [
-    { icon: CreditCard, title: "Pay Utility Bill", color: "bg-blue-100 text-blue-600" },
-    { icon: FileText, title: "Permits", color: "bg-orange-100 text-orange-600" },
-    { icon: AlertTriangle, title: "Report Issue", color: "bg-red-100 text-red-600" },
-    { icon: Trees, title: "Parks & Rec", color: "bg-green-100 text-green-600" }
+    { icon: CreditCard, title: "Pay Utility Bill", color: "bg-blue-100 text-blue-600", serviceId: 1 },
+    { icon: FileText, title: "Permits", color: "bg-orange-100 text-orange-600", serviceId: null },
+    { icon: AlertTriangle, title: "Report Issue", color: "bg-red-100 text-red-600", serviceId: null },
+    { icon: Trees, title: "Parks & Rec", color: "bg-green-100 text-green-600", serviceId: null }
   ];
   
-  const residentServices = [
-    {
-      icon: CreditCard,
-      title: "Pay Your Utility Bill",
-      description: "Access online portal for water bills, view payment history, and manage your account",
-      availability: "Available 24/7",
-      color: "bg-blue-50 text-blue-600"
-    },
-    {
-      icon: Recycle,
-      title: "Garbage & Recycling", 
-      description: "Collection schedules, waste rates, and recycling guidelines",
-      availability: "Weekly collection",
-      color: "bg-green-50 text-green-600"
-    }
-  ];
+  const filteredServices = activeTab === 'all' 
+    ? testData.services 
+    : testData.services.filter(service => service.category === activeTab);
   
   return (
     <div>
@@ -40,19 +39,20 @@ const ServicesPage = () => {
       
       {/* Service Categories */}
       <div className="px-4 pt-4">
-        <div className="flex space-x-6 mb-6">
-          <button className="text-primary font-medium border-b-2 border-primary pb-2">
-            All Services
-          </button>
-          <button className="text-muted-foreground pb-2">
-            Residents
-          </button>
-          <button className="text-muted-foreground pb-2">
-            Business
-          </button>
-          <button className="text-muted-foreground pb-2">
-            Online
-          </button>
+        <div className="flex space-x-6 mb-6 border-b border-border">
+          {tabs.map(tab => (
+            <button 
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`pb-3 px-1 text-sm font-medium transition-all duration-200 border-b-2 ${
+                activeTab === tab.id
+                  ? 'text-primary border-primary'
+                  : 'text-muted-foreground border-transparent hover:text-foreground'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
         
         {/* Quick Actions */}
@@ -62,14 +62,18 @@ const ServicesPage = () => {
             {quickActions.map((action, index) => {
               const Icon = action.icon;
               return (
-                <div key={index} className="quick-action-card">
+                <Link 
+                  key={index} 
+                  to={action.serviceId ? `/services/${action.serviceId}` : '#'}
+                  className="quick-action-card hover-scale animate-fade-in"
+                >
                   <div className={`w-12 h-12 rounded-lg ${action.color} flex items-center justify-center mb-3`}>
                     <Icon size={24} />
                   </div>
                   <span className="text-sm font-medium text-center">
                     {action.title}
                   </span>
-                </div>
+                </Link>
               );
             })}
           </div>
@@ -85,28 +89,34 @@ const ServicesPage = () => {
           </div>
           
           <div className="space-y-3">
-            {residentServices.map((service, index) => {
-              const Icon = service.icon;
+            {filteredServices.map((service, index) => {
+              const Icon = service.icon === 'CreditCard' ? CreditCard : Recycle;
               return (
-                <div key={index} className="bg-card rounded-lg p-4 border border-border">
-                  <div className="flex items-start">
-                    <div className={`w-10 h-10 rounded-lg ${service.color} flex items-center justify-center mr-4 flex-shrink-0`}>
-                      <Icon size={20} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-card-foreground mb-1">
-                        {service.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {service.description}
-                      </p>
-                      <div className="flex items-center text-xs text-muted-foreground">
-                        <Clock size={12} className="mr-1" />
-                        {service.availability}
+                <Link 
+                  key={index} 
+                  to={`/services/${service.id}`}
+                  className="block hover-scale animate-fade-in"
+                >
+                  <div className="bg-card rounded-lg p-4 border border-border transition-all duration-200 hover:shadow-md">
+                    <div className="flex items-start">
+                      <div className={`w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mr-4 flex-shrink-0`}>
+                        <Icon size={20} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-card-foreground mb-1">
+                          {service.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {service.description}
+                        </p>
+                        <div className="flex items-center text-xs text-muted-foreground">
+                          <Clock size={12} className="mr-1" />
+                          {service.availability}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>

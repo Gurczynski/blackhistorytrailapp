@@ -1,0 +1,139 @@
+{
+  "cityHighlights": [
+    {
+      "id": 1,
+      "title": "City Council Meeting Updates",
+      "description": "Latest decisions and upcoming agenda items from this week's council meeting including infrastructure improvements and budget discussions.",
+      "date": "2024-07-10",
+      "image": "/src/assets/city-council-building.jpg",
+      "category": "government"
+    },
+    {
+      "id": 2,
+      "title": "Infrastructure Upgrades",
+      "description": "New water main improvements coming to downtown area with expected completion by fall 2024.",
+      "date": "2024-07-08",
+      "image": "/src/assets/community-meeting.jpg",
+      "category": "infrastructure"
+    },
+    {
+      "id": 3,
+      "title": "Beach Renourishment Project",
+      "description": "Major sand replenishment project begins next month to protect our beautiful coastline.",
+      "date": "2024-07-05",
+      "image": "/src/assets/riverfront-park.jpg",
+      "category": "environment"
+    },
+    {
+      "id": 4,
+      "title": "New Public Art Installation",
+      "description": "Community artists unveil new mural celebrating Daytona Beach's racing heritage downtown.",
+      "date": "2024-07-03",
+      "image": "/src/assets/summer-music-festival.jpg",
+      "category": "arts"
+    },
+    {
+      "id": 5,
+      "title": "Business Development Grants",
+      "description": "Small business grant applications now open for local entrepreneurs and startups.",
+      "date": "2024-07-01",
+      "image": "/src/assets/city-council-building.jpg",
+      "category": "business"
+    }
+  ],
+  "parks": [
+    {
+      "id": 1,
+      "name": "Riverfront Park",
+      "description": "Beautiful waterfront park with walking trails and scenic views",
+      "address": "105 E Orange Ave, Daytona Beach, FL",
+      "amenities": ["Walking Trails", "Playground", "Boat Ramp", "Picnic Areas"],
+      "images": [
+        "/src/assets/riverfront-park.jpg",
+        "/src/assets/community-meeting.jpg"
+      ],
+      "coordinates": [29.2108, -81.0228],
+      "hours": "6:00 AM - 10:00 PM Daily"
+    },
+    {
+      "id": 2,
+      "name": "Daytona Beach Bandshell",
+      "description": "Historic outdoor amphitheater hosting concerts and events",
+      "address": "250 N Atlantic Ave, Daytona Beach, FL",
+      "amenities": ["Amphitheater", "Beach Access", "Parking", "Restrooms"],
+      "images": [
+        "/src/assets/summer-music-festival.jpg"
+      ],
+      "coordinates": [29.2311, -80.9756],
+      "hours": "Varies by Event"
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "title": "Pay Utility Bill",
+      "description": "Access online portal for water bills, view payment history, and manage your account securely.",
+      "category": "residents",
+      "availability": "Available 24/7",
+      "icon": "CreditCard",
+      "details": {
+        "overview": "Our online utility billing system allows residents to manage their water and sewer accounts conveniently.",
+        "howTo": [
+          "Visit the online portal",
+          "Enter your account number",
+          "Select payment method",
+          "Confirm payment details"
+        ],
+        "requirements": ["Account Number", "Email Address", "Payment Method"],
+        "fees": "No convenience fees for bank transfers",
+        "contact": "386-671-8000"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Garbage & Recycling",
+      "description": "Collection schedules, waste rates, and recycling guidelines for residents.",
+      "category": "residents",
+      "availability": "Weekly collection",
+      "icon": "Recycle",
+      "details": {
+        "overview": "Comprehensive waste management services including garbage collection, recycling, and yard waste pickup.",
+        "schedule": {
+          "garbage": "Weekly on designated day",
+          "recycling": "Every other week",
+          "yardWaste": "Weekly during growing season"
+        },
+        "guidelines": [
+          "Place bins at curb by 6 AM",
+          "Remove bins within 24 hours",
+          "No hazardous materials",
+          "Bags must be sealed"
+        ],
+        "contact": "386-671-8080"
+      }
+    }
+  ],
+  "searchableContent": [
+    {
+      "id": 1,
+      "title": "City Manager's Office",
+      "content": "The City Manager serves as the chief administrative officer, implementing policies set by the City Commission.",
+      "url": "https://daytonabeach.gov/government/city-manager",
+      "category": "government"
+    },
+    {
+      "id": 2,
+      "title": "Beach Driving Permits",
+      "content": "Annual beach driving permits available for residents and visitors to access our world-famous beaches.",
+      "url": "https://daytonabeach.gov/services/beach-driving",
+      "category": "permits"
+    },
+    {
+      "id": 3,
+      "title": "Police Department",
+      "content": "Daytona Beach Police Department serves and protects our community with professional law enforcement services.",
+      "url": "https://daytonabeach.gov/departments/police",
+      "category": "safety"
+    }
+  ]
+}

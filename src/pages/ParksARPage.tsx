@@ -71,26 +71,26 @@ const ParksARPage = () => {
         
         {/* AR Navigation */}
         <nav className="flex justify-around items-center pt-4 border-t border-white/20">
-          <button className="flex flex-col items-center space-y-1">
+          <Link to="/parks/gallery" className="flex flex-col items-center space-y-1">
             <Camera size={24} />
             <span className="text-xs">Gallery</span>
-          </button>
-          <button className="flex flex-col items-center space-y-1">
+          </Link>
+          <Link to="/parks/history" className="flex flex-col items-center space-y-1">
             <FileText size={24} />
             <span className="text-xs">History</span>
-          </button>
-          <button className="flex flex-col items-center space-y-1 text-accent">
+          </Link>
+          <Link to="/parks/qr" className="flex flex-col items-center space-y-1 text-accent">
             <Grid3X3 size={24} />
             <span className="text-xs font-medium">Scan QR</span>
-          </button>
-          <button className="flex flex-col items-center space-y-1">
+          </Link>
+          <Link to="/parks/hunt" className="flex flex-col items-center space-y-1">
             <Search size={24} />
             <span className="text-xs">Hunt</span>
-          </button>
-          <button className="flex flex-col items-center space-y-1">
+          </Link>
+          <Link to="/parks/map" className="flex flex-col items-center space-y-1">
             <Map size={24} />
             <span className="text-xs">Map</span>
-          </button>
+          </Link>
         </nav>
       </div>
     </div>

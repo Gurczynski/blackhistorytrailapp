@@ -50,11 +50,17 @@ const EventsPage = () => {
         <button
           key={day}
           onClick={() => setSelectedDate(day)}
-          className={`calendar-day hover:bg-muted ${
+          className={`calendar-day hover:bg-muted rounded-lg ${
             isSelected ? 'selected' : ''
           } ${hasEvent ? 'has-event' : ''}`}
         >
           {day}
+          {hasEvent && (
+            <div className="w-12 h-12 bg-orange-500 rounded-full mx-auto mt-1 flex items-center justify-center relative shadow-lg">
+              {/* Palm tree icon */}
+              <div className="text-white text-lg">🌴</div>
+            </div>
+          )}
         </button>
       );
     }
@@ -123,17 +129,17 @@ const EventsPage = () => {
         
         <div className="space-y-3">
           {events.map(event => (
-            <div key={event.id} className="flex items-center bg-card-subtle rounded-lg p-3">
+            <div key={event.id} className="flex items-center bg-card-subtle rounded-lg p-3 hover-scale animate-fade-in">
               <img
                 src={event.image}
                 alt={event.title}
-                className="w-12 h-12 rounded-lg object-cover mr-3"
+                className="w-16 h-16 rounded-lg object-cover mr-3 shadow-md"
               />
               <div className="flex-1">
                 <h4 className="font-medium text-card-foreground">{event.title}</h4>
                 <p className="text-sm text-muted-foreground">{event.time}</p>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="hover-scale">
                 Details
               </Button>
             </div>
