@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Colors } from '../constants';
+import { Colors } from '../constants/Colors';
 import { RootStackParamList, MainTabParamList } from '../types';
 
 // Screens
