@@ -1,73 +1,175 @@
-# Welcome to your Lovable project
+# Daytona Beach Mobile App
 
-## Project info
+Official React Native mobile application for the City of Daytona Beach, providing residents and visitors with easy access to city services, events, parks information, and interactive features.
 
-**URL**: https://lovable.dev/projects/8990dc21-a240-49b2-905d-220724b4c151
+## Features
 
-## How can I edit this code?
+### 🏠 Home Screen
+- City highlights and news
+- Featured events carousel
+- Quick access to popular services
+- Search functionality
 
-There are several ways of editing your application.
+### 📅 Events
+- Calendar view of city events
+- Event details and locations
+- Interactive date selection
+- Event categories and filtering
 
-**Use Lovable**
+### 🌳 Parks & Recreation
+- Interactive park exploration
+- Photo galleries with swipeable carousels
+- Historical information
+- QR code scanning for park information
+- Scavenger hunt challenges
+- Interactive maps with park locations
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/8990dc21-a240-49b2-905d-220724b4c151) and start prompting.
+### 🏛️ City Services
+- Utility bill payment
+- Service applications
+- Contact information
+- Service categories and search
+- Detailed service information
 
-Changes made via Lovable will be committed automatically to this repo.
+### 🔍 Search
+- City-wide search functionality
+- Service and information lookup
+- Quick access to popular searches
 
-**Use your preferred IDE**
+## Technical Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **React Native** with TypeScript
+- **React Navigation** for seamless navigation
+- **QR Code Scanning** with react-native-qrcode-scanner
+- **Maps Integration** with react-native-maps
+- **Image Galleries** with swipeable carousels
+- **Responsive Design** for iOS and Android
+- **Offline Capability** with local data caching
+- **Push Notifications** ready infrastructure
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Installation
 
-Follow these steps:
+### Prerequisites
+- Node.js (>= 16)
+- React Native CLI
+- Xcode (for iOS development)
+- Android Studio (for Android development)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Setup
+```bash
+# Clone the repository
+git clone <repository-url>
+cd DaytonaBeachApp
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
+# iOS setup
+cd ios && pod install && cd ..
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# Run on iOS
+npm run ios
+
+# Run on Android
+npm run android
 ```
 
-**Edit a file directly in GitHub**
+## Project Structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+src/
+├── components/          # Reusable UI components
+├── screens/            # Screen components
+├── navigation/         # Navigation configuration
+├── constants/          # Colors, fonts, and other constants
+├── data/              # Test data and API interfaces
+├── types/             # TypeScript type definitions
+└── utils/             # Utility functions
+```
 
-**Use GitHub Codespaces**
+## Configuration
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Environment Variables
+The app uses local test data by default. To connect to real city services:
 
-## What technologies are used for this project?
+1. Update API endpoints in `src/constants/`
+2. Configure authentication if required
+3. Update data models in `src/types/`
 
-This project is built with:
+### Customization
+- **Colors**: Update `src/constants/Colors.ts`
+- **Fonts**: Update `src/constants/Fonts.ts`
+- **Data**: Replace test data in `src/data/testData.json`
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Features Implementation
 
-## How can I deploy this project?
+### QR Code Scanning
+- Uses device camera for QR code detection
+- Provides contextual information about park locations
+- Fallback simulation for testing
 
-Simply open [Lovable](https://lovable.dev/projects/8990dc21-a240-49b2-905d-220724b4c151) and click on Share -> Publish.
+### Scavenger Hunt
+- Interactive challenges with progress tracking
+- GPS-based location verification (placeholder)
+- Achievement system with badges
 
-## Can I connect a custom domain to my Lovable project?
+### Maps Integration
+- Native map components
+- Park location markers
+- Directions and navigation
 
-Yes, you can!
+### Image Galleries
+- Swipeable photo carousels
+- Full-screen image viewing
+- Photo sharing capabilities
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Deployment
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### iOS App Store
+1. Configure signing certificates
+2. Update version in `ios/DaytonaBeachApp/Info.plist`
+3. Build and archive in Xcode
+4. Submit through App Store Connect
+
+### Google Play Store
+1. Generate signed APK/AAB
+2. Update version in `android/app/build.gradle`
+3. Upload through Google Play Console
+
+## Data Integration
+
+The app is structured to easily integrate with real city data sources:
+
+- **Events**: Connect to city calendar API
+- **Services**: Integrate with city service portal
+- **Parks**: Connect to parks and recreation database
+- **News**: Integrate with city news feed
+
+## Accessibility
+
+- VoiceOver/TalkBack support
+- High contrast mode compatibility
+- Large text support
+- Keyboard navigation
+
+## Performance
+
+- Optimized image loading and caching
+- Lazy loading for large lists
+- Efficient navigation stack management
+- Memory management for camera features
+
+## Security
+
+- Secure API communication
+- Local data encryption for sensitive information
+- Permission management for camera and location
+- Input validation and sanitization
+
+## Support
+
+For technical support or feature requests, contact the City of Daytona Beach IT Department.
+
+## License
+
+© 2024 City of Daytona Beach. All rights reserved.
