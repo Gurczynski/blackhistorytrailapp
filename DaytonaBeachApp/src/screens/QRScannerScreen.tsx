@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,8 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Header } from '../components/Header';
 import { Colors, Fonts } from '../constants';
@@ -17,10 +17,17 @@ const { width, height } = Dimensions.get('window');
 
 export const QRScannerScreen: React.FC = () => {
   const navigation = useNavigation();
-  const [flashOn, setFlashOn] = useState(false);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanning, setScanning] = useState(true);
 
-  const onSuccess = (e: any) => {
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
+  const onSuccess = (e: { data: string }) => {
     setScanning(false);
     Alert.alert(
       'QR Code Detected!',
@@ -51,39 +58,35 @@ export const QRScannerScreen: React.FC = () => {
         title="Scan QR Code"
         showBack
         onBackPress={() => navigation.goBack()}
-        rightComponent={
-          <TouchableOpacity
-            onPress={() => setFlashOn(!flashOn)}
-            style={[styles.flashButton, flashOn && styles.flashButtonActive]}
-          >
-            <Icon 
-              name="flash-on" 
-              size={24} 
-              color={flashOn ? Colors.warning : Colors.headerForeground} 
-            />
-          </TouchableOpacity>
-        }
       />
 
-      {scanning ? (
-        <QRCodeScanner
-          onRead={onSuccess}
-          flashMode={flashOn ? 'torch' : 'off'}
-          showMarker
-          markerStyle={styles.marker}
-          cameraStyle={styles.camera}
-          customMarker={
-            <View style={styles.scannerOverlay}>
-              <View style={styles.scannerFrame}>
-                <View style={[styles.corner, styles.topLeft]} />
-                <View style={[styles.corner, styles.topRight]} />
-                <View style={[styles.corner, styles.bottomLeft]} />
-                <View style={[styles.corner, styles.bottomRight]} />
-              </View>
+      {hasPermission === null && (
+        <View style={styles.permissionContainer}>
+          <Text style={styles.permissionText}>Requesting camera permission...</Text>
+        </View>
+      )}
+      {hasPermission === false && (
+        <View style={styles.permissionContainer}>
+          <Text style={styles.permissionText}>Camera access denied. Please enable it in settings.</Text>
+        </View>
+      )}
+
+      {hasPermission && scanning ? (
+        <View style={styles.cameraWrapper}>
+          <BarCodeScanner
+            onBarCodeScanned={({ data }) => onSuccess({ data })}
+            style={styles.camera}
+          />
+          <View style={styles.scannerOverlay}>
+            <View style={styles.scannerFrame}>
+              <View style={[styles.corner, styles.topLeft]} />
+              <View style={[styles.corner, styles.topRight]} />
+              <View style={[styles.corner, styles.bottomLeft]} />
+              <View style={[styles.corner, styles.bottomRight]} />
             </View>
-          }
-        />
-      ) : (
+          </View>
+        </View>
+      ) : hasPermission ? (
         <View style={styles.resultContainer}>
           <View style={styles.successIcon}>
             <Icon name="check-circle" size={64} color={Colors.success} />
@@ -108,9 +111,9 @@ export const QRScannerScreen: React.FC = () => {
             </Text>
           </TouchableOpacity>
         </View>
-      )}
+      ) : null}
 
-      {scanning && (
+      {hasPermission && scanning && (
         <View style={styles.bottomControls}>
           <View style={styles.instructionsContainer}>
             <Icon name="qr-code-scanner" size={32} color="white" />
@@ -139,15 +142,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
-  flashButton: {
-    padding: 8,
-    borderRadius: 20,
-  },
-  flashButtonActive: {
-    backgroundColor: 'rgba(255,193,7,0.3)',
+  cameraWrapper: {
+    height: height - 200,
   },
   camera: {
-    height: height - 200,
+    width: '100%',
+    height: '100%',
   },
   marker: {
     borderColor: Colors.primary,
@@ -157,6 +157,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
   },
   scannerFrame: {
     width: 250,
@@ -193,6 +198,18 @@ const styles = StyleSheet.create({
     right: 0,
     borderLeftWidth: 0,
     borderTopWidth: 0,
+  },
+  permissionContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.background,
+    padding: 24,
+  },
+  permissionText: {
+    fontSize: Fonts.sizes.base,
+    color: Colors.foreground,
+    textAlign: 'center',
   },
   bottomControls: {
     position: 'absolute',

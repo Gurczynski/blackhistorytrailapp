@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "expo": "^54.0.8",
+    "expo-maps": "~0.12.7",
+    "expo-secure-store": "~15.0.7",
+    "npx": "^10.2.2",
+    "start": "^5.1.0",
+    "then": "^0.0.1"
+  }
+}

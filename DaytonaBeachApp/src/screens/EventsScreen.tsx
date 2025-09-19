@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { Header } from '../components/Header';
 import { Card } from '../components/Card';
 import { Colors, Fonts } from '../constants';

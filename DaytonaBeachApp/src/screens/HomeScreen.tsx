@@ -8,13 +8,13 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Header } from '../components/Header';
 import { Card } from '../components/Card';
 import { Colors, Fonts } from '../constants';
-import { RootStackParamList } from '../types';
+import { RootStackParamList, CityHighlight } from '../types';
 import testData from '../data/testData.json';
 
 const { width } = Dimensions.get('window');
@@ -74,7 +74,7 @@ export const HomeScreen: React.FC = () => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>City Highlights</Text>
           
-          {testData.cityHighlights.map((highlight) => (
+          {testData.cityHighlights.map((highlight: CityHighlight) => (
             <Card
               key={highlight.id}
               title={highlight.title}

@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { Colors } from '../constants/Colors';
 import { RootStackParamList, MainTabParamList } from '../types';
 
@@ -13,15 +13,21 @@ import { ParksScreen } from '../screens/ParksScreen';
 import { ServicesScreen } from '../screens/ServicesScreen';
 import { QRScannerScreen } from '../screens/QRScannerScreen';
 import { ScavengerHuntScreen } from '../screens/ScavengerHuntScreen';
+import { ServiceDetailScreen } from '../screens/ServiceDetailScreen';
+import { ParkGalleryScreen } from '../screens/ParkGalleryScreen';
+import { ParksMapScreen } from '../screens/ParksMapScreen';
+// ParkHistoryScreen can be implemented later; for now provide a basic fallback
+const ParkHistoryScreen = ScavengerHuntScreen;
+import { SearchScreen } from '../screens/SearchScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
-const MainTabs = () => {
+const MainTabs: React.FC = () => {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+      screenOptions={({ route }): any => ({
+        tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => {
           let iconName: string;
 
           switch (route.name) {
@@ -103,6 +109,11 @@ export const AppNavigator = () => {
         <Stack.Screen name="MainTabs" component={MainTabs} />
         <Stack.Screen name="QRScanner" component={QRScannerScreen} />
         <Stack.Screen name="ScavengerHunt" component={ScavengerHuntScreen} />
+        <Stack.Screen name="ServiceDetail" component={ServiceDetailScreen} />
+        <Stack.Screen name="ParkGallery" component={ParkGalleryScreen} />
+        <Stack.Screen name="ParkHistory" component={ParkHistoryScreen} />
+        <Stack.Screen name="ParksMap" component={ParksMapScreen} />
+        <Stack.Screen name="Search" component={SearchScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -4,10 +4,11 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  StatusBar,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { Colors, Fonts } from '../constants';
+import { StatusBar } from 'expo-status-bar';
+import { useNavigation } from '@react-navigation/native';
 
 interface HeaderProps {
   title?: string;
@@ -21,14 +22,15 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   title,
   showBack = false,
-  showSearch = false,
+  showSearch = true,
   onBackPress,
   onSearchPress,
   rightComponent,
 }) => {
+  const navigation = useNavigation();
   return (
     <>
-      <StatusBar backgroundColor={Colors.headerBackground} barStyle="light-content" />
+      <StatusBar style="light" backgroundColor={Colors.headerBackground} />
       <View style={styles.container}>
         <View style={styles.leftSection}>
           {showBack && (
@@ -48,7 +50,10 @@ export const Header: React.FC<HeaderProps> = ({
 
         <View style={styles.rightSection}>
           {showSearch && (
-            <TouchableOpacity onPress={onSearchPress} style={styles.iconButton}>
+            <TouchableOpacity
+              onPress={onSearchPress ?? (() => navigation.navigate('Search' as never))}
+              style={styles.iconButton}
+            >
               <Icon name="search" size={24} color={Colors.headerForeground} />
             </TouchableOpacity>
           )}
