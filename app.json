@@ -1,6 +1,0 @@
-{
-  "plugins": [
-    "expo-maps",
-    "expo-secure-store"
-  ]
-}
