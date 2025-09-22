@@ -16,8 +16,7 @@ import { ScavengerHuntScreen } from '../screens/ScavengerHuntScreen';
 import { ServiceDetailScreen } from '../screens/ServiceDetailScreen';
 import { ParkGalleryScreen } from '../screens/ParkGalleryScreen';
 import { ParksMapScreen } from '../screens/ParksMapScreen';
-// ParkHistoryScreen can be implemented later; for now provide a basic fallback
-const ParkHistoryScreen = ScavengerHuntScreen;
+import { ParkHistoryScreen } from '../screens/ParkHistoryScreen';
 import { SearchScreen } from '../screens/SearchScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
