@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import { Header } from '../components/Header';
 import { Colors, Fonts } from '../constants';
-import MapView, { Marker } from 'expo-maps';
+import MapView, { Marker } from 'react-native-maps';
 import testData from '../data/testData.json';
 import { fetchParksFromGis, GisPark } from '../services/gis';
 
