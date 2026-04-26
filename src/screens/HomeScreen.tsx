@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Header } from '../components/Header';
 import { Card } from '../components/Card';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 import { RootStackParamList, CityHighlight } from '../types';
 import testData from '../data/testData.json';
 
@@ -23,6 +23,7 @@ type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 export const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const { Colors, Fonts } = useAppTheme();
 
   const handleSearchPress = () => {
     navigation.navigate('Search', {});
@@ -98,7 +99,7 @@ export const HomeScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+  const styles = useMemo(() => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -214,4 +215,5 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     fontWeight: Fonts.weights.medium,
   },
-});
+  }),
+  [Colors, Fonts]);

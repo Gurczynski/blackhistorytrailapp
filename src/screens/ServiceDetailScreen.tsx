@@ -1,16 +1,40 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Header } from '../components/Header';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 import { RootStackParamList } from '../types';
 import testData from '../data/testData.json';
 
 export const ServiceDetailScreen: React.FC = () => {
   const navigation = useNavigation();
+  const { Colors, Fonts } = useAppTheme();
   const route = useRoute<RouteProp<RootStackParamList, 'ServiceDetail'>>();
   const { serviceId } = route.params;
   const service = testData.services.find(s => s.id === serviceId);
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: { flex: 1, backgroundColor: Colors.background },
+    content: { padding: 16 },
+    title: {
+      fontSize: Fonts.sizes.xl,
+      fontWeight: Fonts.weights.bold,
+      color: Colors.foreground,
+      marginBottom: 8,
+    },
+    description: { color: Colors.mutedForeground, fontSize: Fonts.sizes.base, marginBottom: 16 },
+    section: { marginTop: 16 },
+    sectionTitle: {
+      fontSize: Fonts.sizes.lg,
+      fontWeight: Fonts.weights.semibold,
+      color: Colors.foreground,
+      marginBottom: 8,
+    },
+    subsection: { marginTop: 8 },
+    subTitle: { fontWeight: Fonts.weights.semibold, color: Colors.cardForeground, marginBottom: 4 },
+    listItem: { color: Colors.cardForeground, marginBottom: 4 },
+    body: { color: Colors.cardForeground, lineHeight: 20 },
+  }), [Colors, Fonts]);
 
   return (
     <View style={styles.container}>
@@ -40,26 +64,3 @@ export const ServiceDetailScreen: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.background },
-  content: { padding: 16 },
-  title: {
-    fontSize: Fonts.sizes.xl,
-    fontWeight: Fonts.weights.bold,
-    color: Colors.foreground,
-    marginBottom: 8,
-  },
-  description: { color: Colors.mutedForeground, fontSize: Fonts.sizes.base, marginBottom: 16 },
-  section: { marginTop: 16 },
-  sectionTitle: {
-    fontSize: Fonts.sizes.lg,
-    fontWeight: Fonts.weights.semibold,
-    color: Colors.foreground,
-    marginBottom: 8,
-  },
-  subsection: { marginTop: 8 },
-  subTitle: { fontWeight: Fonts.weights.semibold, color: Colors.cardForeground, marginBottom: 4 },
-  listItem: { color: Colors.cardForeground, marginBottom: 4 },
-  body: { color: Colors.cardForeground, lineHeight: 20 },
-});

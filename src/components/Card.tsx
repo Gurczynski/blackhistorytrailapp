@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ViewStyle,
 } from 'react-native';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 
 interface CardProps {
   title: string;
@@ -26,7 +26,41 @@ export const Card: React.FC<CardProps> = ({
   style,
   children,
 }) => {
+  const { Colors, Fonts } = useAppTheme();
   const CardComponent = onPress ? TouchableOpacity : View;
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      backgroundColor: Colors.cardBackground,
+      borderRadius: 12,
+      marginVertical: 8,
+      elevation: 2,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.1,
+      shadowRadius: 2,
+    },
+    image: {
+      width: '100%',
+      height: 200,
+      borderTopLeftRadius: 12,
+      borderTopRightRadius: 12,
+    },
+    content: {
+      padding: 16,
+    },
+    title: {
+      fontSize: Fonts.sizes.lg,
+      fontWeight: Fonts.weights.bold,
+      color: Colors.cardForeground,
+      marginBottom: 8,
+    },
+    description: {
+      fontSize: Fonts.sizes.sm,
+      color: Colors.mutedForeground,
+      lineHeight: 20,
+    },
+  }), [Colors, Fonts]);
 
   return (
     <CardComponent
@@ -51,36 +85,3 @@ export const Card: React.FC<CardProps> = ({
     </CardComponent>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.cardBackground,
-    borderRadius: 12,
-    marginVertical: 8,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-  },
-  content: {
-    padding: 16,
-  },
-  title: {
-    fontSize: Fonts.sizes.lg,
-    fontWeight: Fonts.weights.bold,
-    color: Colors.cardForeground,
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: Fonts.sizes.sm,
-    color: Colors.mutedForeground,
-    lineHeight: 20,
-  },
-});

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Header } from '../components/Header';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 import { RootStackParamList } from '../types';
 import testData from '../data/testData.json';
 
@@ -23,6 +23,7 @@ type ParksScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 export const ParksScreen: React.FC = () => {
   const navigation = useNavigation<ParksScreenNavigationProp>();
+  const { Colors, Fonts } = useAppTheme();
 
   const parkFeatures = [
     {
@@ -136,7 +137,7 @@ export const ParksScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+  const styles = useMemo(() => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -302,4 +303,5 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     fontWeight: Fonts.weights.medium,
   },
-});
+  }),
+  [Colors, Fonts]);

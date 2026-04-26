@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Header } from '../components/Header';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 import { RootStackParamList } from '../types';
 import testData from '../data/testData.json';
 
@@ -22,6 +22,7 @@ type ServicesScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 export const ServicesScreen: React.FC = () => {
   const navigation = useNavigation<ServicesScreenNavigationProp>();
   const [activeTab, setActiveTab] = useState('all');
+  const { Colors, Fonts } = useAppTheme();
   
   const tabs = [
     { id: 'all', label: 'All Services' },
@@ -170,7 +171,7 @@ export const ServicesScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+  const styles = useMemo(() => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -309,4 +310,5 @@ const styles = StyleSheet.create({
     color: Colors.mutedForeground,
     marginLeft: 4,
   },
-});
+  }),
+  [Colors, Fonts]);

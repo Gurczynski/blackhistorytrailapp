@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Modal } from 'react-native';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 import { Header } from '../components/Header';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import testData from '../data/testData.json';
@@ -22,6 +22,7 @@ export const SearchScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showKeyModal, setShowKeyModal] = useState(false);
   const listRef = useRef<FlatList<UIMessage>>(null);
+  const { Colors, Fonts } = useAppTheme();
 
   const appContext = useMemo(() => {
     // Provide compact app data context to the model
@@ -140,7 +141,7 @@ export const SearchScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+  const styles = useMemo(() => StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.background },
   flex: { flex: 1 },
   listContent: { padding: 12 },
@@ -167,4 +168,5 @@ const styles = StyleSheet.create({
   modalBtnText: { color: Colors.cardForeground },
   modalSaveText: { color: Colors.primaryForeground },
   modalHint: { color: Colors.mutedForeground, fontSize: Fonts.sizes.xs, marginTop: 8 },
-});
+  }),
+  [Colors, Fonts]);

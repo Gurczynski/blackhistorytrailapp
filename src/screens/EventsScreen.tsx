@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { Header } from '../components/Header';
 import { Card } from '../components/Card';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 import testData from '../data/testData.json';
 
 const { width } = Dimensions.get('window');
@@ -19,6 +19,7 @@ export const EventsScreen: React.FC = () => {
   const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar');
   const [selectedDate, setSelectedDate] = useState(23);
   const [currentMonth] = useState('July 2024');
+  const { Colors, Fonts } = useAppTheme();
   
   const eventDays = [4, 15, 19, 23, 25];
   
@@ -151,7 +152,7 @@ export const EventsScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+  const styles = useMemo(() => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -282,4 +283,5 @@ const styles = StyleSheet.create({
     color: Colors.cardForeground,
     lineHeight: 20,
   },
-});
+  }),
+  [Colors, Fonts]);

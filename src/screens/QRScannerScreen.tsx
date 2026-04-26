@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Header } from '../components/Header';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 
 const { width, height } = Dimensions.get('window');
 
@@ -19,6 +19,7 @@ export const QRScannerScreen: React.FC = () => {
   const navigation = useNavigation();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanning, setScanning] = useState(true);
+  const { Colors, Fonts } = useAppTheme();
 
   useEffect(() => {
     (async () => {
@@ -137,7 +138,7 @@ export const QRScannerScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+  const styles = useMemo(() => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
@@ -304,4 +305,5 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     marginLeft: 8,
   },
-});
+  }),
+  [Colors, Fonts]);

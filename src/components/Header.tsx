@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
 
@@ -28,6 +28,43 @@ export const Header: React.FC<HeaderProps> = ({
   rightComponent,
 }) => {
   const navigation = useNavigation();
+  const { Colors, Fonts } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      height: 56,
+      backgroundColor: Colors.headerBackground,
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 16,
+      elevation: 4,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+    leftSection: {
+      width: 40,
+      alignItems: 'flex-start',
+    },
+    centerSection: {
+      flex: 1,
+      alignItems: 'center',
+    },
+    rightSection: {
+      width: 40,
+      alignItems: 'flex-end',
+    },
+    title: {
+      fontSize: Fonts.sizes.lg,
+      fontWeight: Fonts.weights.bold,
+      color: Colors.headerForeground,
+    },
+    iconButton: {
+      padding: 8,
+    },
+  }), [Colors, Fonts]);
+
   return (
     <>
       <StatusBar style="light" backgroundColor={Colors.headerBackground} />
@@ -63,38 +100,3 @@ export const Header: React.FC<HeaderProps> = ({
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    height: 56,
-    backgroundColor: Colors.headerBackground,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  leftSection: {
-    width: 40,
-    alignItems: 'flex-start',
-  },
-  centerSection: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  rightSection: {
-    width: 40,
-    alignItems: 'flex-end',
-  },
-  title: {
-    fontSize: Fonts.sizes.lg,
-    fontWeight: Fonts.weights.bold,
-    color: Colors.headerForeground,
-  },
-  iconButton: {
-    padding: 8,
-  },
-});

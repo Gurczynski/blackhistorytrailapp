@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Header } from '../components/Header';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 import { RootStackParamList } from '../types';
 import testData from '../data/testData.json';
 
@@ -17,6 +17,7 @@ export const ParkHistoryScreen: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'ParkHistory'>>();
   const { parkId } = route.params;
   const park = testData.parks.find(p => p.id === parkId);
+  const { Colors, Fonts } = useAppTheme();
 
   // Mock historical data for demonstration
   const historicalInfo = {
@@ -92,7 +93,7 @@ export const ParkHistoryScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+  const styles = useMemo(() => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -169,14 +170,5 @@ const styles = StyleSheet.create({
     color: Colors.cardForeground,
     lineHeight: 22,
   },
-  emptyContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
-  },
-  emptyText: {
-    fontSize: Fonts.sizes.base,
-    color: Colors.mutedForeground,
-  },
-});
+  }),
+  [Colors, Fonts]);

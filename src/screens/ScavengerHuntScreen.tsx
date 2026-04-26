@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Header } from '../components/Header';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 
 interface Hunt {
   id: number;
@@ -28,6 +28,7 @@ interface Hunt {
 export const ScavengerHuntScreen: React.FC = () => {
   const navigation = useNavigation();
   const [activeHunt, setActiveHunt] = useState<number | null>(null);
+  const { Colors, Fonts } = useAppTheme();
   
   const hunts: Hunt[] = [
     {
@@ -289,7 +290,7 @@ export const ScavengerHuntScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+  const styles = useMemo(() => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -549,4 +550,5 @@ const styles = StyleSheet.create({
     fontWeight: Fonts.weights.medium,
     color: 'white',
   },
-});
+  }),
+  [Colors, Fonts]);

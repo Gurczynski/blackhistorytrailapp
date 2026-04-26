@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, Dimensions, ListRenderItem } from 'react-native';
+import React, { useState, useMemo } from 'react';
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Header } from '../components/Header';
-import { Colors, Fonts } from '../constants';
+import { useAppTheme } from '../providers/ThemeProvider';
 import { RootStackParamList } from '../types';
 import ImageViewing from 'react-native-image-viewing';
 import testData from '../data/testData.json';
@@ -19,8 +19,18 @@ export const ParkGalleryScreen: React.FC = () => {
   const park = testData.parks.find(p => p.id === parkId);
   const [visible, setVisible] = useState(false);
   const [index, setIndex] = useState(0);
+  const { Colors, Fonts } = useAppTheme();
 
   const images = (park?.images || []).map((uri: string) => ({ uri }));
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: { flex: 1, backgroundColor: Colors.background },
+    grid: { padding: GAP },
+    cell: { width: ITEM, height: ITEM, margin: GAP },
+    thumb: { width: '100%', height: '100%', borderRadius: 8 },
+    empty: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+    emptyText: { color: Colors.mutedForeground, fontSize: Fonts.sizes.base },
+  }), [Colors, Fonts]);
 
   return (
     <View style={styles.container}>
@@ -56,12 +66,3 @@ export const ParkGalleryScreen: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.background },
-  grid: { padding: GAP },
-  cell: { width: ITEM, height: ITEM, margin: GAP },
-  thumb: { width: '100%', height: '100%', borderRadius: 8 },
-  empty: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  emptyText: { color: Colors.mutedForeground, fontSize: Fonts.sizes.base },
-});
