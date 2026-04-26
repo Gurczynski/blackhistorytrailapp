@@ -119,7 +119,28 @@ export function DynamicNavigator({
             page_id: '',
             type: 'text',
             sort_order: 0,
-            data: { content: `Error: ${config.error}` },
+            data: { content: `Error loading app: ${config.error}` },
+            created_at: '',
+            updated_at: '',
+          },
+        ]}
+      />
+    );
+  }
+
+  if (tabPages.length === 0 && stackPages.length === 0) {
+    return (
+      <ScreenRenderer
+        blocks={[
+          {
+            id: 'no-pages',
+            page_id: '',
+            type: 'text',
+            sort_order: 0,
+            data: {
+              content:
+                'No screens configured yet. Publish pages in the App Weaver admin to populate this app.',
+            },
             created_at: '',
             updated_at: '',
           },
