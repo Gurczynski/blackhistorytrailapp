@@ -16,9 +16,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
 
       - name: Install deps
-        run: npm install
+        run: npm ci
 
       - name: Publish OTA Update
         run: npx eas update --branch production --message "Auto-publish from GitHub Actions [${GITHUB_SHA::7}]"
