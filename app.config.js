@@ -1,4 +1,4 @@
-// Expo app configuration (CommonJS) for SDK 49
+// Expo app configuration (CommonJS) for SDK 54
 const fs = require('fs');
 const path = require('path');
 

@@ -27,6 +27,7 @@
     "@types/events": "^3.0.3",
     "expo": "^54.0.0",
     "expo-barcode-scanner": "~13.0.1",
+    "expo-dev-client": "~6.0.21",
     "expo-linear-gradient": "~15.0.7",
     "expo-linking": "^55.0.14",
     "expo-secure-store": "~15.0.7",
