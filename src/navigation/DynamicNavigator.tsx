@@ -3,241 +3,110 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
-import { ScreenRenderer } from '../renderers/ScreenRenderer';
+import DynamicScreen from '../screens/DynamicScreen';
 import { useAppTheme } from '../providers/ThemeProvider';
-import type { PageRow, ContentBlockRow, AppConfig } from '../hooks/useAppConfig';
+import type { AppSchema, AppSchemaScreen } from '../types/app-schema';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-interface NavConfig {
-  navType?: string;
-  tabIcon?: string;
-  tabLabel?: string;
-  headerTitle?: string;
-  headerShown?: boolean;
-  customComponent?: string;
+interface DynamicNavigatorProps {
+  schema: AppSchema;
+  loading: boolean;
+  error: string | null;
 }
 
-function parseNavConfig(page: PageRow): NavConfig {
-  return (page.nav_config || {}) as NavConfig;
+function LoadingScreen() {
+  const { Colors } = useAppTheme();
+  return (
+    <DynamicScreen
+      screen={{
+        id: 'loading',
+        title: 'Loading',
+        blocks: [{ id: '1', type: 'text', props: { content: 'Loading...' } }],
+      }}
+    />
+  );
 }
 
-function ScreenWrapper({
-  pageId,
-  blocksByPage,
-}: {
-  pageId: string;
-  blocksByPage: Record<string, ContentBlockRow[]>;
-}) {
-  const blocks = blocksByPage[pageId] || [];
-  return <ScreenRenderer blocks={blocks} />;
+function ErrorScreen({ errorMsg }: { errorMsg?: string }) {
+  return (
+    <DynamicScreen
+      screen={{
+        id: 'error',
+        title: 'Error',
+        blocks: [{ id: '1', type: 'text', props: { content: errorMsg || 'An error occurred' } }],
+      }}
+    />
+  );
 }
 
-function TabScrren({
-  route,
-  tabPages,
-  blocksByPage,
-  customScreens,
-}: {
-  route: { name: string };
-  tabPages: PageRow[];
-  blocksByPage: Record<string, ContentBlockRow[]>;
-  customScreens: Record<string, React.FC<any>>;
-}) {
-  const page = tabPages.find((p) => p.slug === route.name);
-  if (!page) return <ScreenRenderer blocks={[]} />;
-  const nav = parseNavConfig(page);
-
-  if (nav.customComponent && customScreens[nav.customComponent]) {
-    const CustomComp = customScreens[nav.customComponent];
-    return <CustomComp />;
-  }
-
-  return <ScreenWrapper pageId={page.id} blocksByPage={blocksByPage} />;
-}
-
-function StackScrren({
-  route,
-  stackPages,
-  blocksByPage,
-  customScreens,
-}: {
-  route: { name: string };
-  stackPages: PageRow[];
-  blocksByPage: Record<string, ContentBlockRow[]>;
-  customScreens: Record<string, React.FC<any>>;
-}) {
-  const page = stackPages.find((p) => p.slug === route.name);
-  if (!page) return <ScreenRenderer blocks={[]} />;
-  const nav = parseNavConfig(page);
-
-  if (nav.customComponent && customScreens[nav.customComponent]) {
-    const CustomComp = customScreens[nav.customComponent];
-    return <CustomComp />;
-  }
-
-  return <ScreenWrapper pageId={page.id} blocksByPage={blocksByPage} />;
-}
-
-export function DynamicNavigator({
-  config,
-  customScreens = {},
-}: {
-  config: AppConfig;
-  customScreens?: Record<string, React.FC<any>>;
-}) {
+function TabNavigator({ schema, schemaScreens }: { schema: AppSchema; schemaScreens: Record<string, AppSchemaScreen> }) {
   const { Colors } = useAppTheme();
 
-  const { tabPages, stackPages } = useMemo(() => {
-    const tabs: PageRow[] = [];
-    const stacks: PageRow[] = [];
-    for (const page of config.pages) {
-      const nav = parseNavConfig(page);
-      if (nav.navType === 'tab') {
-        tabs.push(page);
-      } else {
-        stacks.push(page);
-      }
-    }
-    return {
-      tabPages: tabs.sort((a, b) => a.sort_order - b.sort_order),
-      stackPages: stacks.sort((a, b) => a.sort_order - b.sort_order),
-    };
-  }, [config.pages]);
-
-  if (config.loading) {
-    return <ScreenRenderer blocks={[]} loading />;
-  }
-
-  if (config.error) {
-    return (
-      <ScreenRenderer
-        blocks={[
-          {
-            id: 'error',
-            page_id: '',
-            type: 'text',
-            sort_order: 0,
-            data: { content: `Error loading app: ${config.error}` },
-            created_at: '',
-            updated_at: '',
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => {
+        const item = schema.navigation.items.find(i => i.name === route.name);
+        return {
+          tabBarIcon: ({ focused, color, size }) => {
+            const iconName = item?.tabIcon || 'help';
+            return (
+              <Icon
+                name={iconName as any}
+                size={size}
+                color={focused ? Colors.accent : color}
+              />
+            );
           },
-        ]}
-      />
-    );
-  }
-
-  if (tabPages.length === 0 && stackPages.length === 0) {
-    return (
-      <ScreenRenderer
-        blocks={[
-          {
-            id: 'no-pages',
-            page_id: '',
-            type: 'text',
-            sort_order: 0,
-            data: {
-              content:
-                'No screens configured yet. Publish pages in the App Weaver admin to populate this app.',
-            },
-            created_at: '',
-            updated_at: '',
+          tabBarLabel: item?.tabLabel || route.name,
+          tabBarActiveTintColor: Colors.accent,
+          tabBarInactiveTintColor: Colors.mutedForeground,
+          tabBarStyle: {
+            backgroundColor: Colors.navBackground,
+            borderTopColor: Colors.mutedForeground + '30',
+            height: 60,
+            paddingBottom: 8,
+            paddingTop: 8,
           },
-        ]}
-      />
-    );
-  }
+          tabBarLabelStyle: { fontSize: 12, fontWeight: '500' },
+          headerShown: false,
+        };
+      }}
+    >
+      {schema.navigation.items.map((item) => (
+        <Tab.Screen key={item.screenId} name={item.name}>
+          {() => <DynamicScreen screen={schemaScreens[item.screenId]} />}
+        </Tab.Screen>
+      ))}
+    </Tab.Navigator>
+  );
+}
+
+export function DynamicNavigator({ schema, loading, error }: DynamicNavigatorProps) {
+  const { Colors } = useAppTheme();
+
+  const schemaScreens = useMemo(() => {
+    const map: Record<string, AppSchemaScreen> = {};
+    for (const s of schema.screens) map[s.id] = s;
+    return map;
+  }, [schema.screens]);
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Tabs">
-          {() => (
-            <Tab.Navigator
-              screenOptions={({ route }) => {
-                const page = tabPages.find((p) => p.slug === route.name);
-                const nav = parseNavConfig(page!);
-                return {
-                  tabBarIcon: ({
-                    focused,
-                    color: iconColor,
-                    size,
-                  }: {
-                    focused: boolean;
-                    color: string;
-                    size: number;
-                  }) => {
-                    const iconName = nav.tabIcon || 'help';
-                    return (
-                      <Icon
-                        name={iconName as any}
-                        size={size}
-                        color={focused ? Colors.accent : iconColor}
-                      />
-                    );
-                  },
-                  tabBarLabel: nav.tabLabel || page?.title || route.name,
-                  tabBarActiveTintColor: Colors.accent,
-                  tabBarInactiveTintColor: Colors.mutedForeground,
-                  tabBarStyle: {
-                    backgroundColor: Colors.navBackground,
-                    borderTopColor: Colors.mutedForeground + '30',
-                    height: 60,
-                    paddingBottom: 8,
-                    paddingTop: 8,
-                  },
-                  tabBarLabelStyle: { fontSize: 12, fontWeight: '500' },
-                  headerShown: false,
-                };
-              }}
-            >
-              {tabPages.map((page) => (
-                <Tab.Screen
-                  key={page.id}
-                  name={page.slug}
-                  options={{
-                    tabBarLabel: parseNavConfig(page).tabLabel || page.title,
-                  }}
-                >
-                  {(props: any) => (
-                    <TabScrren
-                      route={props.route}
-                      tabPages={tabPages}
-                      blocksByPage={config.blocksByPage}
-                      customScreens={customScreens}
-                    />
-                  )}
-                </Tab.Screen>
-              ))}
-            </Tab.Navigator>
-          )}
-        </Stack.Screen>
-
-        {stackPages.map((page) => {
-          const nav = parseNavConfig(page);
-          return (
-            <Stack.Screen
-              key={page.id}
-              name={page.slug}
-              options={{
-                headerShown: nav.headerShown ?? true,
-                headerTitle: nav.headerTitle || page.title,
-                headerTintColor: Colors.primary,
-                headerStyle: { backgroundColor: Colors.background },
-              }}
-            >
-              {(props: any) => (
-                <StackScrren
-                  route={props.route}
-                  stackPages={stackPages}
-                  blocksByPage={config.blocksByPage}
-                  customScreens={customScreens}
-                />
-              )}
-            </Stack.Screen>
-          );
-        })}
+        {loading ? (
+          <Stack.Screen name="Loading" component={LoadingScreen} />
+        ) : error ? (
+          <Stack.Screen
+            name="Error"
+            children={() => <ErrorScreen errorMsg={error} />}
+          />
+        ) : (
+          <Stack.Screen name="MainTabs">
+            {() => <TabNavigator schema={schema} schemaScreens={schemaScreens} />}
+          </Stack.Screen>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

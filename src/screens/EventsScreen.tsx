@@ -20,14 +20,14 @@ export const EventsScreen: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(23);
   const [currentMonth] = useState('July 2024');
   const { Colors, Fonts } = useAppTheme();
-  
+
   const eventDays = [4, 15, 19, 23, 25];
-  
+
   const generateCalendar = () => {
     const daysInMonth = 31;
     const firstDay = 1; // Monday
     const days = [];
-    
+
     // Add empty cells for days before the first of the month
     for (let i = 0; i < firstDay; i++) {
       days.push(
@@ -36,252 +36,249 @@ export const EventsScreen: React.FC = () => {
         </View>
       );
     }
-    
+
     // Add days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const isSelected = day === selectedDate;
       const hasEvent = eventDays.includes(day);
-      
+
       days.push(
         <TouchableOpacity
           key={day}
           onPress={() => setSelectedDate(day)}
           style={[
             styles.calendarDay,
-            isSelected && styles.selectedDay,
-            hasEvent && styles.eventDay,
+            isSelected && styles.calendarDaySelected,
+            hasEvent && styles.calendarDayHasEvent,
           ]}
         >
-          <Text style={[
-            styles.calendarDayText,
-            isSelected && styles.selectedDayText,
-          ]}>
+          <Text style={[styles.calendarDayText, isSelected && styles.calendarDayTextSelected]}>
             {day}
           </Text>
-          {hasEvent && <View style={styles.eventIndicator} />}
+          {hasEvent && <View style={styles.eventDot} />}
         </TouchableOpacity>
       );
     }
-    
+
     return days;
   };
-  
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: Colors.background,
+    },
+    scrollView: {
+      flex: 1,
+    },
+    viewToggleContainer: {
+      padding: 16,
+    },
+    viewToggle: {
+      flexDirection: 'row',
+      backgroundColor: Colors.muted,
+      borderRadius: 25,
+      padding: 4,
+    },
+    toggleButton: {
+      flex: 1,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      borderRadius: 21,
+      alignItems: 'center',
+    },
+    activeToggleButton: {
+      backgroundColor: Colors.primary,
+    },
+    toggleButtonText: {
+      fontSize: Fonts.sizes.sm,
+      fontWeight: Fonts.weights.medium,
+      color: Colors.mutedForeground,
+    },
+    activeToggleButtonText: {
+      color: Colors.primaryForeground,
+    },
+    calendarHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+    },
+    calendarNavButton: {
+      padding: 8,
+    },
+    calendarTitle: {
+      fontSize: Fonts.sizes.lg,
+      fontWeight: Fonts.weights.bold,
+      color: Colors.foreground,
+    },
+    calendarSubtitle: {
+      fontSize: Fonts.sizes.sm,
+      color: Colors.mutedForeground,
+    },
+    calendarGrid: {
+      paddingHorizontal: 16,
+    },
+    calendarDay: {
+      width: (width - 80) / 7,
+      height: (width - 80) / 7,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 8,
+      marginBottom: 8,
+    },
+    calendarDaySelected: {
+      backgroundColor: Colors.primary,
+    },
+    calendarDayHasEvent: {
+      position: 'relative',
+    },
+    calendarDayText: {
+      fontSize: Fonts.sizes.sm,
+      color: Colors.foreground,
+    },
+    calendarDayTextSelected: {
+      color: Colors.primaryForeground,
+      fontWeight: Fonts.weights.bold,
+    },
+    calendarDayTextMuted: {
+      fontSize: Fonts.sizes.sm,
+      color: Colors.mutedForeground,
+    },
+    eventDot: {
+      position: 'absolute',
+      bottom: 4,
+      width: 4,
+      height: 4,
+      borderRadius: 2,
+      backgroundColor: Colors.accent,
+    },
+    listContainer: {
+      padding: 16,
+    },
+    eventCard: {
+      marginBottom: 16,
+    },
+    eventCardContent: {
+      padding: 16,
+    },
+    eventTitle: {
+      fontSize: Fonts.sizes.lg,
+      fontWeight: Fonts.weights.semibold,
+      color: Colors.foreground,
+      marginBottom: 8,
+    },
+    eventDetails: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+    eventDetailText: {
+      fontSize: Fonts.sizes.sm,
+      color: Colors.mutedForeground,
+      marginLeft: 8,
+    },
+  }), [Colors, Fonts, width]);
+
   return (
     <View style={styles.container}>
-      <Header title="Events" />
-      
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        {/* View Toggle */}
-        <View style={styles.viewToggleContainer}>
-          <View style={styles.viewToggle}>
-            <TouchableOpacity
-              onPress={() => setViewMode('calendar')}
-              style={[
-                styles.toggleButton,
-                viewMode === 'calendar' && styles.activeToggleButton,
-              ]}
-            >
-              <Text style={[
-                styles.toggleButtonText,
-                viewMode === 'calendar' && styles.activeToggleButtonText,
-              ]}>
-                Calendar View
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setViewMode('list')}
-              style={[
-                styles.toggleButton,
-                viewMode === 'list' && styles.activeToggleButton,
-              ]}
-            >
-              <Text style={[
-                styles.toggleButtonText,
-                viewMode === 'list' && styles.activeToggleButtonText,
-              ]}>
-                List View
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        
-        {/* Calendar Header */}
-        <View style={styles.calendarHeader}>
-          <TouchableOpacity style={styles.calendarNavButton}>
-            <Icon name="chevron-left" size={24} color={Colors.foreground} />
+      <Header title="Events" showBackButton={false} />
+      <View style={styles.viewToggleContainer}>
+        <View style={styles.viewToggle}>
+          <TouchableOpacity
+            style={[styles.toggleButton, viewMode === 'calendar' && styles.activeToggleButton]}
+            onPress={() => setViewMode('calendar')}
+          >
+            <Text style={[styles.toggleButtonText, viewMode === 'calendar' && styles.activeToggleButtonText]}>
+              Calendar
+            </Text>
           </TouchableOpacity>
-          <Text style={styles.calendarHeaderText}>{currentMonth}</Text>
-          <TouchableOpacity style={styles.calendarNavButton}>
-            <Icon name="chevron-right" size={24} color={Colors.foreground} />
+          <TouchableOpacity
+            style={[styles.toggleButton, viewMode === 'list' && styles.activeToggleButton]}
+            onPress={() => setViewMode('list')}
+          >
+            <Text style={[styles.toggleButtonText, viewMode === 'list' && styles.activeToggleButtonText]}>
+              List
+            </Text>
           </TouchableOpacity>
         </View>
-        
-        {/* Calendar Grid */}
-        <View style={styles.calendarContainer}>
-          <View style={styles.weekDaysHeader}>
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-              <Text key={day} style={styles.weekDayText}>{day}</Text>
-            ))}
+      </View>
+
+      {viewMode === 'calendar' ? (
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.calendarHeader}>
+            <TouchableOpacity style={styles.calendarNavButton}>
+              <Icon name="chevron-left" size={24} color={Colors.foreground} />
+            </TouchableOpacity>
+            <View>
+              <Text style={styles.calendarTitle}>{currentMonth}</Text>
+              <Text style={styles.calendarSubtitle}>2024</Text>
+            </View>
+            <TouchableOpacity style={styles.calendarNavButton}>
+              <Icon name="chevron-right" size={24} color={Colors.foreground} />
+            </TouchableOpacity>
           </View>
           <View style={styles.calendarGrid}>
-            {generateCalendar()}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 8 }}>
+              {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
+                <Text key={day} style={{ width: (width - 80) / 7, textAlign: 'center', fontSize: Fonts.sizes.xs, color: Colors.mutedForeground }}>
+                  {day}
+                </Text>
+              ))}
+            </View>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+              {generateCalendar()}
+            </View>
           </View>
-        </View>
-        
-        {/* Selected Date Events */}
-        <View style={styles.eventsSection}>
-          <Text style={styles.eventsSectionTitle}>July {selectedDate}, 2024</Text>
-          
-          {testData.events.map(event => (
-            <Card
-              key={event.id}
-              title={event.title}
-              image={event.image}
-              onPress={() => {}}
-            >
-              <View style={styles.eventDetails}>
-                <Text style={styles.eventTime}>{event.time}</Text>
-                <Text style={styles.eventLocation}>{event.location}</Text>
-                <Text style={styles.eventDescription}>{event.description}</Text>
-              </View>
-            </Card>
-          ))}
-        </View>
-      </ScrollView>
+
+          {/* Event list for selected date */}
+          <View style={{ padding: 16 }}>
+            <Text style={{ fontSize: Fonts.sizes.lg, fontWeight: Fonts.weights.semibold, color: Colors.foreground, marginBottom: 12 }}>
+              Events on July {selectedDate}
+            </Text>
+            {testData.events.filter(e => e.day === selectedDate).map((event, idx) => (
+              <Card key={idx} style={styles.eventCard}>
+                <View style={styles.eventCardContent}>
+                  <Text style={styles.eventTitle}>{event.title}</Text>
+                  <View style={styles.eventDetails}>
+                    <Icon name="access-time" size={16} color={Colors.mutedForeground} />
+                    <Text style={styles.eventDetailText}>{event.time}</Text>
+                  </View>
+                  <View style={styles.eventDetails}>
+                    <Icon name="location-on" size={16} color={Colors.mutedForeground} />
+                    <Text style={styles.eventDetailText}>{event.location}</Text>
+                  </View>
+                </View>
+              </Card>
+            ))}
+          </View>
+        </ScrollView>
+      ) : (
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.listContainer}>
+            {testData.events.map((event, idx) => (
+              <Card key={idx} style={styles.eventCard}>
+                <View style={styles.eventCardContent}>
+                  <Text style={styles.eventTitle}>{event.title}</Text>
+                  <View style={styles.eventDetails}>
+                    <Icon name="calendar-today" size={16} color={Colors.mutedForeground} />
+                    <Text style={styles.eventDetailText}>July {event.day}, 2024</Text>
+                  </View>
+                  <View style={styles.eventDetails}>
+                    <Icon name="access-time" size={16} color={Colors.mutedForeground} />
+                    <Text style={styles.eventDetailText}>{event.time}</Text>
+                  </View>
+                  <View style={styles.eventDetails}>
+                    <Icon name="location-on" size={16} color={Colors.mutedForeground} />
+                    <Text style={styles.eventDetailText}>{event.location}</Text>
+                  </View>
+                </View>
+              </Card>
+            ))}
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };
-
-  const styles = useMemo(() => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  viewToggleContainer: {
-    padding: 16,
-  },
-  viewToggle: {
-    flexDirection: 'row',
-    backgroundColor: Colors.muted,
-    borderRadius: 25,
-    padding: 4,
-  },
-  toggleButton: {
-    flex: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 21,
-    alignItems: 'center',
-  },
-  activeToggleButton: {
-    backgroundColor: Colors.primary,
-  },
-  toggleButtonText: {
-    fontSize: Fonts.sizes.sm,
-    fontWeight: Fonts.weights.medium,
-    color: Colors.mutedForeground,
-  },
-  activeToggleButtonText: {
-    color: Colors.primaryForeground,
-  },
-  calendarHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  calendarNavButton: {
-    padding: 8,
-  },
-  calendarHeaderText: {
-    fontSize: Fonts.sizes.lg,
-    fontWeight: Fonts.weights.bold,
-    color: Colors.foreground,
-  },
-  calendarContainer: {
-    paddingHorizontal: 16,
-  },
-  weekDaysHeader: {
-    flexDirection: 'row',
-    marginBottom: 8,
-  },
-  weekDayText: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: Fonts.sizes.sm,
-    fontWeight: Fonts.weights.medium,
-    color: Colors.mutedForeground,
-    paddingVertical: 8,
-  },
-  calendarGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 24,
-  },
-  calendarDay: {
-    width: width / 7 - 2,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 1,
-    borderRadius: 8,
-  },
-  selectedDay: {
-    backgroundColor: Colors.primary,
-  },
-  eventDay: {
-    position: 'relative',
-  },
-  calendarDayText: {
-    fontSize: Fonts.sizes.sm,
-    color: Colors.foreground,
-  },
-  calendarDayTextMuted: {
-    fontSize: Fonts.sizes.sm,
-    color: Colors.mutedForeground,
-  },
-  selectedDayText: {
-    color: Colors.primaryForeground,
-    fontWeight: Fonts.weights.bold,
-  },
-  eventIndicator: {
-    position: 'absolute',
-    bottom: 4,
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: Colors.accent,
-  },
-  eventsSection: {
-    padding: 16,
-  },
-  eventsSectionTitle: {
-    fontSize: Fonts.sizes.lg,
-    fontWeight: Fonts.weights.bold,
-    color: Colors.foreground,
-    marginBottom: 16,
-  },
-  eventDetails: {
-    marginTop: 8,
-  },
-  eventTime: {
-    fontSize: Fonts.sizes.sm,
-    color: Colors.mutedForeground,
-    marginBottom: 4,
-  },
-  eventLocation: {
-    fontSize: Fonts.sizes.sm,
-    color: Colors.mutedForeground,
-    marginBottom: 8,
-  },
-  eventDescription: {
-    fontSize: Fonts.sizes.sm,
-    color: Colors.cardForeground,
-    lineHeight: 20,
-  },
-  }),
-  [Colors, Fonts]);
