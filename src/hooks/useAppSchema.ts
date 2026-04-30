@@ -11,6 +11,7 @@ export function useAppSchema(projectId: string, isDraft = false) {
   const loadSchema = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const localSchema = await storage.getSchema();
       if (localSchema) setSchema(localSchema);
 

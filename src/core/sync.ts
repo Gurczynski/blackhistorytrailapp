@@ -7,21 +7,26 @@ export { storage };
 
 export async function fetchRemoteSchema(
   projectId: string,
-  isDraft = false
+  isDraft = false,
+  retryCount = 3
 ): Promise<AppSchema | null> {
-  try {
-    const { data, error } = await supabase
-      .from('app_schemas')
-      .select('schema_json, version')
-      .eq('project_id', projectId)
-      .eq('is_published', !isDraft)
-      .single();
+  for (let attempt = 0; attempt < retryCount; attempt++) {
+    try {
+      const { data, error } = await supabase
+        .from('app_schemas')
+        .select('schema_json, version')
+        .eq('project_id', projectId)
+        .eq('is_published', !isDraft)
+        .single();
 
-    if (error || !data) return null;
-    return data.schema_json as AppSchema;
-  } catch {
-    return null;
+      if (error || !data) return null;
+      return data.schema_json as AppSchema;
+    } catch (err) {
+      if (attempt === retryCount - 1) return null;
+      await new Promise(r => setTimeout(r, 1000 * Math.pow(2, attempt)));
+    }
   }
+  return null;
 }
 
 export async function syncSchema(
